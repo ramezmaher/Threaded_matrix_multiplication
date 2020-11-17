@@ -29,6 +29,11 @@ void* read_array(void* arg){
     int h,g,d;
     if(f->type == 'a'){
         matA = fopen(f->file_name,"r");
+        if(matA == NULL){
+            printf("No such file!\n");
+            v=1;
+            return NULL;
+        }
         fscanf(matA,"row=%d col=%d",&d,&d);
         for(h=0;h<rowA;h++){
             for(g=0;g<colA;g++){
@@ -44,6 +49,11 @@ void* read_array(void* arg){
     }
     else if(f->type == 'b'){
         matB = fopen(f->file_name,"r");
+        if(matB == NULL){
+            printf("No such file!\n");
+            v=1;
+            return NULL;
+        }
         fscanf(matB,"row=%d col=%d",&d,&d);
         for(h=0;h<rowA;h++){
             for(g=0;g<colA;g++){
@@ -69,6 +79,11 @@ void* read_size(void* s){
     struct file_req *f = (struct file_req *)s;
     if(f->type == 'a'){
         matA = fopen(f->file_name,"r");
+        if(matA == NULL){
+            printf("No such file!\n");
+            v=1;
+            return NULL;
+        }        
         if(fscanf(matA,"row=%d col=%d",&rowA,&colA) < 1){
             printf("An error occurred while reading parameters!");
             fclose(matA);
@@ -79,6 +94,11 @@ void* read_size(void* s){
     }
     else if(f->type == 'b'){
         matB = fopen(f->file_name,"r");
+        if(matB == NULL){
+            printf("No such file!\n");
+            v=1;
+            return NULL;
+        }        
         if(fscanf(matB,"row=%d col=%d",&rowB,&colB) < 1){
             printf("An error occurred while reading parameters!");
             fclose(matB);
@@ -152,7 +172,7 @@ int main(int argc,char* argv[]){
     pthread_join(t2,NULL);
 
     if(v == 1){
-        perror("Error in the input files");
+        printf("Error in the input files\n");
         return 0;
     }
     int ma[rowA][colA];
@@ -173,7 +193,7 @@ int main(int argc,char* argv[]){
     pthread_join(t2,NULL);
 
     if(v == 1){
-        perror("Error in the input files");
+        printf("Error in the input files\n");
         return 0;
     }
 
