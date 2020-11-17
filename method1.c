@@ -8,7 +8,6 @@ int *mA;
 int *mB;
 int numberOfColA;
 int numberOfColB;
-int rowIndex=0;
 
 void *solve_row(void* arg){
     int *id = (int *)arg; //index of the row which the thread hold
@@ -28,7 +27,7 @@ void *solve_row(void* arg){
             current_elementA = (int *)(mA+((*id)*numberOfColA)+l);
             current_elementB = (int *)(mB+j+(k*numberOfColB));
         }
-        current_elementC = (int *)(ans+((*id)*numberOfColB)+1);
+        current_elementC = (int *)(ans+((*id)*numberOfColB)+j+1);
     }
 
 }
