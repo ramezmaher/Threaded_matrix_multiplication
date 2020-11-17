@@ -28,12 +28,12 @@ int main(){
     gettimeofday(&start,NULL);
     method1((int *)ar1,(int *)ar2,2,3,3,2);
     gettimeofday(&stop,NULL);
-    printf("Seconds token for method 1 : %lu\n",stop.tv_sec - start.tv_sec);    
+    printf("Seconds token for method 1 : %lu micro-second\n",stop.tv_usec - start.tv_usec);    
 
     //Using method2 to calculate
     gettimeofday(&start,NULL);
     //method2();
     gettimeofday(&stop,NULL);
-    printf("Seconds token for method 2 : %lu\n",stop.tv_sec - start.tv_sec);    
+    printf("Seconds token for method 2 : %lu micro-second\n",stop.tv_usec - start.tv_usec);    
     return 0;
 }

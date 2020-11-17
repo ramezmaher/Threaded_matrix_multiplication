@@ -46,10 +46,12 @@ int method1(int *m1,int *m2,int r1,int c1,int r2,int c2){
     ans = &answer[0][0];
     numberOfColA = c1;
     numberOfColB = c2;
+    int array_of_ind[r1];
     pthread_t tids[r1];
     i=0;
     for(i; i<r1 ; i++){
-        pthread_create(&tids[i],NULL,solve_row,&i);
+        array_of_ind[i] = i;
+        pthread_create(&tids[i],NULL,solve_row,&array_of_ind[i]);
     }
     for(i=0;i<r1;i++){
         pthread_join(tids[i],NULL);
