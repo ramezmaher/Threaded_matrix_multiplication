@@ -175,6 +175,12 @@ int main(int argc,char* argv[]){
         printf("Error in the input files\n");
         return 0;
     }
+
+    if(colA != rowB){
+        printf("Invalid sizes,could not multiplicate!");
+        return 0;
+    }
+    
     int ma[rowA][colA];
     int mb[rowB][colB];
     int mc1[rowA][colB];
@@ -182,6 +188,8 @@ int main(int argc,char* argv[]){
 
     matrixA = &ma[0][0];
     matrixB = &mb[0][0];
+
+
 
     matC = fopen(fc.file_name,"w");
     if(matC == NULL){
