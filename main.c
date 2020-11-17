@@ -31,8 +31,8 @@ void* read_array(void* arg){
         fscanf(matA,"row=%d col=%d",&d,&d);
         for(h=0;h<rowA;h++){
             for(g=0;g<colA;g++){
-                if(fscanf(matA,"%d",matrixA+g+(h*colA)) == 1){
-                    perror("Error occured while parsing values!");
+                if(fscanf(matA,"%d ",matrixA+g+(h*colA)) < 1){
+                    printf("Error occured while parsing values! in A at i=%d j=%d\n",h,g);
                     fclose(matA);
                     v=1;
                     return NULL;
@@ -46,8 +46,8 @@ void* read_array(void* arg){
         fscanf(matB,"row=%d col=%d",&d,&d);
         for(h=0;h<rowA;h++){
             for(g=0;g<colA;g++){
-                if(fscanf(matB,"%d",matrixB+g+(h*colB)) == 1){
-                    perror("Error occured while parsing values!");
+                if(fscanf(matB,"%d ",matrixB+g+(h*colB)) < 1){
+                    printf("Error occured while parsing values! in B at i=%d j=%d\n",h,g);
                     fclose(matB);
                     v=1;
                     return NULL;
@@ -57,7 +57,7 @@ void* read_array(void* arg){
         fclose(matB);
     }
     else{
-        perror("Error occurred!");
+        printf("Error occurred!");
         v=1;
         return NULL;
     }
@@ -68,8 +68,8 @@ void* read_size(void* s){
     struct file_req *f = (struct file_req *)s;
     if(f->type == 'a'){
         matA = fopen(f->file_name,"r");
-        if(fscanf(matA,"row=%d col=%d",&rowA,&colA) == 1){
-            perror("An error occurred while reading parameters!");
+        if(fscanf(matA,"row=%d col=%d",&rowA,&colA) < 1){
+            printf("An error occurred while reading parameters!");
             fclose(matA);
             v=1;
             return NULL;
@@ -78,8 +78,8 @@ void* read_size(void* s){
     }
     else if(f->type == 'b'){
         matB = fopen(f->file_name,"r");
-        if(fscanf(matB,"row=%d col=%d",&rowB,&colB) == 1){
-            perror("An error occurred while reading parameters!");
+        if(fscanf(matB,"row=%d col=%d",&rowB,&colB) < 1){
+            printf("An error occurred while reading parameters!");
             fclose(matB);
             v=1;
             return NULL;
@@ -87,7 +87,7 @@ void* read_size(void* s){
         fclose(matB);
     }
     else{
-        perror("Error occurred!");
+        printf("Error occurred!");
         v=1;
         return NULL;
     }
@@ -155,7 +155,6 @@ int main(int argc,char* argv[]){
         perror("Error in the input files");
         return 0;
     }
-    printf("rowA =%d colA=%d\n",rowA,colA);
     int ma[rowA][colA];
     int mb[rowB][colB];
 
@@ -174,14 +173,6 @@ int main(int argc,char* argv[]){
         perror("Error in the input files");
         return 0;
     }
-    int i,j;
-    for(i=0;i<rowA;i++){
-        for(j=0;j<colA;j++){
-            printf("%d ",ma[i][j]);
-        }
-        printf("\n");
-    }
-
     //Using method1 to calculate
     gettimeofday(&start,NULL);
     method1(matrixA,matrixB,rowA,colA,rowB,colB);
