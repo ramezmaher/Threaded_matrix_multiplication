@@ -183,6 +183,14 @@ int main(int argc,char* argv[]){
     matrixA = &ma[0][0];
     matrixB = &mb[0][0];
 
+    matC = fopen(fc.file_name,"w");
+    if(matC == NULL){
+        printf("output file does not exist!");
+        return 0;
+    }
+    fprintf(matC,"Output file:\n");
+    fprintf(matC,"\n");
+    fclose(matC);
 
     //threads to read the values in matrices
     pthread_create(&t1,NULL,read_array,&fa);
@@ -215,30 +223,47 @@ int main(int argc,char* argv[]){
     matrixC1 = &mc1[0][0];
     matrixC2 = &mc2[0][0];
     
+    long time1,time2;
+
     //Using method1 to calculate
     gettimeofday(&start,NULL);
     method1(matrixA,matrixB,rowA,colA,rowB,colB,matrixC1);
     gettimeofday(&stop,NULL);
-    printf("Seconds token for method 1 : %lu micro-second\n",stop.tv_usec - start.tv_usec);
-
-    for(p=0;p<rowA;p++){
-        for(q=0;q<colB;q++){
-            printf("%d ",mc1[p][q]);
-        }
-        printf("\n");
-    }
+    time1 = stop.tv_usec - start.tv_usec;
+    printf("Seconds token for method 1 : %lu micro-second\n",time1);
 
     //Using method2 to calculate
     gettimeofday(&start,NULL);
     method2(matrixA,matrixB,rowA,colA,rowB,colB,matrixC2);
     gettimeofday(&stop,NULL);
-    printf("Seconds token for method 2 : %lu micro-second\n",stop.tv_usec - start.tv_usec);
+    time2 = stop.tv_usec - start.tv_usec;
+    printf("Seconds token for method 2 : %lu micro-second\n",time2);
 
+    matC = fopen(fc.file_name,"a+");
+    fprintf(matC,"Method 1 output:\n");
+    fprintf(matC,"\n");    
     for(p=0;p<rowA;p++){
         for(q=0;q<colB;q++){
-            printf("%d ",mc1[p][q]);
+            fprintf(matC,"%d ",mc1[p][q]);
         }
-        printf("\n");
-    }    
+        fprintf(matC,"\n");
+    }
+    fprintf(matC,"\n");    
+    fprintf(matC,"Time token in micro-seconds: %lu\n",time1);
+    fprintf(matC,"\n");
+    fprintf(matC,"******************************************************\n");    
+    fprintf(matC,"Method 2 output:\n");
+    fprintf(matC,"\n");    
+    for(p=0;p<rowA;p++){
+        for(q=0;q<colB;q++){
+            fprintf(matC,"%d ",mc2[p][q]);
+        }
+        fprintf(matC,"\n");
+    }
+    fprintf(matC,"\n");    
+    fprintf(matC,"Time token in micro-seconds: %lu\n",time2);
+    fprintf(matC,"\n");
+    fprintf(matC,"******************************************************\n");
+    fclose(matC);
     return 0;
 }
