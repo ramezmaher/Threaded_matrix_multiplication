@@ -11,7 +11,8 @@ FILE * matC;
 
 int* matrixA;
 int* matrixB;
-int* matrixC;
+int* matrixC1;
+int* matrixC2;
 int rowA;
 int rowB;
 int colA;
@@ -94,7 +95,6 @@ void* read_size(void* s){
     return NULL;
 }
 
-
 int main(int argc,char* argv[]){
     struct timeval stop,start;
     struct file_req fa,fb,fc;
@@ -157,9 +157,12 @@ int main(int argc,char* argv[]){
     }
     int ma[rowA][colA];
     int mb[rowB][colB];
+    int mc1[rowA][colB];
+    int mc2[rowA][colB];
 
     matrixA = &ma[0][0];
     matrixB = &mb[0][0];
+
 
     //threads to read the values in matrices
     pthread_create(&t1,NULL,read_array,&fa);
@@ -173,16 +176,49 @@ int main(int argc,char* argv[]){
         perror("Error in the input files");
         return 0;
     }
+
+    int p,q;
+
+    //initialize values in ans array for method 1
+    for(p=0;p<rowA;p++){
+        for(q=0;q<colB;q++){
+            mc1[p][q] = 0;
+        }
+    }
+    //initialize values in ans array for method 2
+    for(p=0;p<rowA;p++){
+        for(q=0;q<colB;q++){
+            mc2[p][q] = 0;
+        }
+    }
+
+    matrixC1 = &mc1[0][0];
+    matrixC2 = &mc2[0][0];
+    
     //Using method1 to calculate
     gettimeofday(&start,NULL);
-    method1(matrixA,matrixB,rowA,colA,rowB,colB);
+    method1(matrixA,matrixB,rowA,colA,rowB,colB,matrixC1);
     gettimeofday(&stop,NULL);
-    printf("Seconds token for method 1 : %lu micro-second\n",stop.tv_usec - start.tv_usec);    
+    printf("Seconds token for method 1 : %lu micro-second\n",stop.tv_usec - start.tv_usec);
+
+    for(p=0;p<rowA;p++){
+        for(q=0;q<colB;q++){
+            printf("%d ",mc1[p][q]);
+        }
+        printf("\n");
+    }
 
     //Using method2 to calculate
     gettimeofday(&start,NULL);
-    method2((int *) matrixA,(int *)matrixB,rowA,colA,rowB,colB);
+    method2(matrixA,matrixB,rowA,colA,rowB,colB,matrixC2);
     gettimeofday(&stop,NULL);
-    printf("Seconds token for method 2 : %lu micro-second\n",stop.tv_usec - start.tv_usec);    
+    printf("Seconds token for method 2 : %lu micro-second\n",stop.tv_usec - start.tv_usec);
+
+    for(p=0;p<rowA;p++){
+        for(q=0;q<colB;q++){
+            printf("%d ",mc1[p][q]);
+        }
+        printf("\n");
+    }    
     return 0;
 }

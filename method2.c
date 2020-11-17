@@ -31,17 +31,11 @@ void *solve_row2(void* arg){
     }
 }
 
-int method2(int *m1,int *m2,int r1,int c1,int r2,int c2){
+int method2(int *m1,int *m2,int r1,int c1,int r2,int c2,int *m3){
     int i=0,j=0;
     mA2 = m1;
     mB2 = m2;
-    int answer2[r1][c2];
-    for(i=0;i<r1;i++){
-        for(j=0;j<c2;j++){
-            answer2[i][j] = 0;
-        }
-    }
-    ans2 = &answer2[0][0];
+    ans2 = m3;
     numberOfColA2 = c1;
     numberOfColB2 = c2;
     struct row_col array_of_elements[r1*c2];
@@ -60,12 +54,5 @@ int method2(int *m1,int *m2,int r1,int c1,int r2,int c2){
             pthread_join(tids[(i*c2)+j],NULL);
         }
     }
-
-    for(i=0;i<r1;i++){
-        for(j=0;j<c2;j++){
-            printf("%d ",answer2[i][j]);
-        }
-        printf("\n");
-    }
-
+    
 }
